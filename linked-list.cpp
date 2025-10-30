@@ -1,76 +1,65 @@
-#include <bits/stdc++.h>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include <iostream>
+#include <string>
+#include <any>
 
 class LinkedList {
 public:
-  template <typename T> struct Node {
-    size_t index;
-    T item;
-    std::string key;
-    struct Node *next;
-    struct Node *last;
-  };
+    struct BaseNode {
+        std::string key;
+        BaseNode* next = nullptr;
+        BaseNode* last = nullptr;
+        std::any item;   
+    };
+    size_t size = 0;
+    BaseNode* head = nullptr;
+    BaseNode* tail = nullptr;
 
-  size_t size = 0;
-  void *head;
-  void *tail;
+    void AddItem(const std::string& key, std::any value) {
+        
+        BaseNode* temp = head;
+        while (temp) {
+            if (temp->key == key) {
+                std::cout << "Item exists\n";
+                return;
+            }
+            temp = temp->next;
+        }
 
-  template <typename T> T getItem(std::string key) {
-    Node<T> *tempNode = (Node<T> *)this->head;
-    for (size_t i = 0; i < this->size; i++) {
-      if (tempNode->key == key) {
-        return tempNode->item;
-      }
-      tempNode = tempNode->next;
+        BaseNode* node = new BaseNode;
+        node->key = key;
+        node->item = value;
+
+        if (!head) {
+            head = tail = node;
+        } else {
+            tail->next = node;
+            node->last = tail;
+            tail = node;
+        }
+        size++;
     }
-    return NULL;
-  }
 
-  template <typename T> int IndexSearch(std::string key) {
-    // return -1 if the size is  0
-    if (!this->size)
-      return -1;
-
-    Node<T> *tempNode = (Node<T> *)this->head;
-
-    for (size_t i = 0; i < this->size; i++) {
-      if (tempNode->key == key) {
-        return i;
-      }
-      tempNode = tempNode->next;
+    
+    std::any getItem(const std::string& key) {
+        BaseNode* temp = head;
+        while (temp) {
+            if (temp->key == key)
+                return temp->item;
+            temp = temp->next;
+        }
+        return {}; 
     }
-    // didint find anything so return -1
-    return -1;
-  }
-
-  template <typename T> void AddItem(std::string key, T value) {
-    if (!this->size) {
-      Node<T> *tempNode = (Node<T> *)malloc(sizeof(Node<T>));
-      tempNode->item = value;
-      tempNode->key = key;
-      tempNode->last = (Node<T> *)this->tail;
-      this->head = tempNode;
-      this->size += 1;
-    } else {
-      if (this->IndexSearch<T>(key) == -1) {
-        Node<T> *tempNode = (Node<T> *)malloc(sizeof(Node<T>));
-        tempNode->item = value;
-        tempNode->key = key;
-        tempNode->last = ((Node<T> *)this->tail);
-        ((Node<T> *)this->tail)->next = tempNode;
-        this->size += 1;
-      } else {
-        std::cout << "item exist" << std ::endl;
-      }
-    }
-  }
 };
 
 int main() {
-  LinkedList list;
-  list.AddItem<std::string>("abol", "moz");
-  list.AddItem("sepehr", 6);
+    LinkedList list;
+    list.AddItem("moz", std::string("banana"));
+    list.AddItem("age", 21);
+
+    std::any value = list.getItem("moz"  );
+    if(value.type() == typeid(std::string )){
+      std::cout << std::any_cast<std::string>(value) << std::endl ; 
+    }else if(value.type() == typeid(int )){
+      std::cout << std::any_cast<int>(value) << std::endl  ;
+    }
 }
