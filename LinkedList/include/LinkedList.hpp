@@ -17,5 +17,6 @@ public:
     BaseNode* tail = nullptr;
 
     void AddItem(const std::string& key, std::any value);
+    bool keyExists(std::string key);
     std::any getItem(const std::string& key);
 };

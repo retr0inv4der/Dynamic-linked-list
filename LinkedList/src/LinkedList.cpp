@@ -38,7 +38,13 @@ public:
     }
     size++;
   }
-
+  bool keyExists(std::string key){
+    BaseNode* temp  = this->head; 
+    for(int i = 0 ; i < this->size ; i++) {
+      if(key == temp->key) return true; 
+    }
+    return false ;
+  }
   std::any getItem(const std::string &key) {
     BaseNode *temp = head;
     while (temp) {
