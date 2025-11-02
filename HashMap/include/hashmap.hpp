@@ -15,4 +15,5 @@ class HashMap{
 
     void AddPair(std::string key , std::any value);
     std::any SearchItem(std::string key);
+    void DeletePair(std::string key );
 }; 

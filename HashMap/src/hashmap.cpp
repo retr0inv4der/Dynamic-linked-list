@@ -26,4 +26,9 @@ class HashMap{
             return nullptr ; 
         }
     }
+
+    void DeletePair(std::string key ){
+        int index =  Hasher(key)%100 ;
+        mainArr[index].DeleteNode(key);
+    }
 }; 

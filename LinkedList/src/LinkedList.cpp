@@ -54,4 +54,18 @@ public:
     }
     return {};
   }
+
+
+
+  void DeleteNode(std::string key){
+    BaseNode* temp = head ; 
+    while(temp){
+      if(temp->key == key ) {
+        free(temp) ; 
+      }
+      temp = temp->next ; 
+    }
+  }
+
+  
 };
